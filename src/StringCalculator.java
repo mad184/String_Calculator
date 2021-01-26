@@ -4,7 +4,7 @@ public class StringCalculator {
 
     /**
      * A string calculator that receive as input a String with numbers separated
-     *   by a ",". The function add the numbers and return it as int.
+     *   by a delimiter that is in between "//" and "\n". The function add the numbers and return it as int.
      *
      * @param numbers - The String with numbers separated by ","
      * @return the sum of the numbers
@@ -14,10 +14,16 @@ public class StringCalculator {
         if (numbers.isEmpty()){
             return 0;
         }else {
-            String[] splitString = numbers.split(",");
+            String[] halfSplit = numbers.split("\n");
+
+            String delimiter = halfSplit[0].substring(2);
+
+            String[] splitString = halfSplit[1].split("["+delimiter+"]");
+
             int totalSum = 0;
 
             for (String s : splitString) {
+
                 if (s.isBlank()){
                     return 0;
                 }else if (s.contains("\n")){
@@ -37,36 +43,37 @@ public class StringCalculator {
      */
     @Test
     public void rightSumTest(){
-        String numberTest_1 = "1\n,2,5";
-        String numberTest_2 = "\n1,1\n,1\n";
-        String numberTest_3 = "\n0\n,75,5";
-        String numberTest_4 = " ";
-        String numberTest_5 = "\n";
+        String numberTest_1 = "//;\n1;3;4";
+        String numberTest_2 = "//@\n2@3@8";
+        String numberTest_3 = "///\n0/75/5";
+        String numberTest_4 = "// \n0 0 30";
+        String numberTest_5 = "//*\n1*2*3";
 
         if (add(numberTest_1) != 8){
             System.out.println("The expected result was 8, instead it was "+ add(numberTest_1));
         }
-        if (add(numberTest_2) != 3){
+        if (add(numberTest_2) != 13){
             System.out.println("The expected result was 3, instead it was "+ add(numberTest_2));
         }
         if (add(numberTest_3) != 80){
             System.out.println("The expected result was 80, instead it was "+ add(numberTest_3));
         }
-        if (add(numberTest_4) != 0){
-            System.out.println("The expected result was 0, instead it was "+ add(numberTest_4));
+        if (add(numberTest_4) != 30){
+            System.out.println("The expected result was 30, instead it was "+ add(numberTest_4));
         }
-        if (add(numberTest_5) != 0){
+        if (add(numberTest_5) != 6){
             System.out.println("The expected result was 0, instead it was "+ add(numberTest_5));
         }
+
     }
 
     public static void main(String[] args) {
 
-        String numberTest_1 = "1\n,2,5";
-        String numberTest_2 = "\n1,1\n,1\n";
-        String numberTest_3 = "\n0\n,75,5";
-        String numberTest_4 = "";
-        String numberTest_5 = "\n";
+        String numberTest_1 = "//;\n1;3;4";
+        String numberTest_2 = "//@\n2@3@8";
+        String numberTest_3 = "///\n0/75/5";
+        String numberTest_4 = "// \n0 0 30";
+        String numberTest_5 = "//*\n1*2*3";
 
         int result1 = add(numberTest_1);
         int result2 = add(numberTest_2);
