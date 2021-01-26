@@ -7,9 +7,9 @@ Master: The complete project including Bonus parts
 
 All the other branch contains the steps from part 1 to 4 and Bonus 1 and Bonus 2 (that is 2, 3 and 4)
 
-Part_1
-Part_2
-Part_3
-Part_4
-BONUS/Bonus_1
-BONUS/Bonus_2 -> The one merged to Master
+- Part_1
+- Part_2
+- Part_3
+- Part_4
+- BONUS/Bonus_1
+- BONUS/Bonus_2 -> The one merged to Master
