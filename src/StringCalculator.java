@@ -20,7 +20,11 @@ public class StringCalculator {
             for (String s : splitString) {
                 if (s.isBlank()){
                     return 0;
-                }else {
+                }else if (s.contains("\n")){
+                    s = s.trim();
+                    totalSum += Integer.parseInt(s);
+                }
+                else {
                     totalSum += Integer.parseInt(s);
                 }
             }
@@ -33,11 +37,11 @@ public class StringCalculator {
      */
     @Test
     public void rightSumTest(){
-        String numberTest_1 = "1,2,5";
-        String numberTest_2 = "1,1,1";
-        String numberTest_3 = "0,75,5";
-        String numberTest_4 = "";
-        String numberTest_5 = " ";
+        String numberTest_1 = "1\n,2,5";
+        String numberTest_2 = "\n1,1\n,1\n";
+        String numberTest_3 = "\n0\n,75,5";
+        String numberTest_4 = " ";
+        String numberTest_5 = "\n";
 
         if (add(numberTest_1) != 8){
             System.out.println("The expected result was 8, instead it was "+ add(numberTest_1));
@@ -58,11 +62,11 @@ public class StringCalculator {
 
     public static void main(String[] args) {
 
-        String numberTest_1 = "1,2,5";
-        String numberTest_2 = "1,1,1";
-        String numberTest_3 = "0,75,5";
+        String numberTest_1 = "1\n,2,5";
+        String numberTest_2 = "\n1,1\n,1\n";
+        String numberTest_3 = "\n0\n,75,5";
         String numberTest_4 = "";
-        String numberTest_5 = " ";
+        String numberTest_5 = "\n";
 
         int result1 = add(numberTest_1);
         int result2 = add(numberTest_2);
