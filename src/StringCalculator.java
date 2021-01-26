@@ -1,13 +1,7 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.ForkJoinPool;
-
-
 public class StringCalculator {
 
-    static String[] temporaryStorage;
 
     /**
      * A string calculator that receive as input a String with numbers separated
@@ -26,6 +20,8 @@ public class StringCalculator {
 
             String delimiter = halfSplit[0].substring(2);
 
+            // If there are more \n in the string i will split the string in more than once. This will ensure that
+            //   halfSplit is size 2 - First is the delimiters, Second the numbers.
             if (halfSplit.length > 2){
                 String joinSplit = "";
                 for (int i = 1; i < halfSplit.length; i++){
@@ -34,46 +30,24 @@ public class StringCalculator {
                 halfSplit[1] = joinSplit;
             }
 
-
+            // Check delimiter size if more than one it will call differentDelimiters() to handle different cases
             if (delimiter.length() > 1){
-
-                if (delimiter.contains(",")){
-                    temporaryStorage = new String[0];
-                    splitString = differentDelimiters(delimiter, halfSplit[1]);
-                }else {
-
-                    splitString = halfSplit[1].split("[" + delimiter + "]");
-
-                    String buildString = "";
-                    for (String t : splitString) {
-                        if (t.isBlank()) {
-                            buildString += ",";
-                        } else {
-                            buildString += t;
-                        }
-                    }
-                    splitString = buildString.split(",".repeat(delimiter.length()-1));
-                }
+                splitString = differentDelimiters(delimiter, halfSplit[1]);
             }else {
                 splitString = halfSplit[1].split("[" + delimiter + "]");
             }
 
             int totalSum = 0;
 
+            // Start of the loop to go through the numbers and sum them
             for (String s : splitString) {
 
                 if (s.isBlank()){
                     return 0;
 
-                }else if (s.contains("\n")){
-                    s = s.trim();
-                    if (Integer.parseInt(s) < 0){
-                        throw new Exception("Negatives not allowed, number " + s + " is negative, therefore not allowed");
-                    }
-
-                    totalSum += Integer.parseInt(s);
-
-                } else if(s.length()==4) {
+                }
+                //If the number had 4 digits
+                else if(s.length()==4) {
                     if (Integer.parseInt(s) < 0){
                         throw new Exception("Negatives not allowed, number " + s + " is negative, therefore not allowed");
                     }else {
@@ -100,18 +74,29 @@ public class StringCalculator {
         }
     }
 
+    /**
+     * A method that allows a string to be divided by more than one delimiter when the are separated by ","
+     *
+     * @param delimitersString A String of delimiters separated by ","
+     * @param numberString The String of numbers separated by the different delimiters
+     *
+     * @return A String[] of integers.
+     */
     public static  String[] differentDelimiters(String delimitersString, String numberString){
         String [] resultString;
-        String[] delimitersArray = delimitersString.split(",");
 
-        for (String aDelimiter:delimitersArray){
+        if (delimitersString.contains(",")) {
+            String[] delimitersArray = delimitersString.split(",");
 
-            if (numberString.contains(aDelimiter)){
-
-                numberString = numberString.replace(aDelimiter, "!");
-
+            for (String aDelimiter : delimitersArray) {
+                if (numberString.contains(aDelimiter)) {
+                    numberString = numberString.replace(aDelimiter, "!");
+                }
             }
+        }else {
+            numberString = numberString.replace(delimitersString, "!");
         }
+
         numberString = numberString.replaceAll("[!]+","!");
 
         resultString = numberString.split("!");
@@ -120,7 +105,8 @@ public class StringCalculator {
     }
 
     /**
-     * A test that compares the values expected with the actual value return by the method add()
+     * A test that compares the values expected with the actual value return by the method add(), and check if exceptions
+     * were caught
      */
     @Test
     public void rightSumTest() throws Exception {
