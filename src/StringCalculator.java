@@ -18,6 +18,14 @@ public class StringCalculator {
 
             String delimiter = halfSplit[0].substring(2);
 
+            if (halfSplit.length > 2){
+                String joinSplit = "";
+                for (int i = 1; i < halfSplit.length; i++){
+                    joinSplit += halfSplit[i];
+                }
+                halfSplit[1] = joinSplit;
+            }
+
             String[] splitString = halfSplit[1].split("["+delimiter+"]");
 
             int totalSum = 0;
@@ -45,8 +53,8 @@ public class StringCalculator {
     public void rightSumTest(){
         String numberTest_1 = "//;\n1;3;4";
         String numberTest_2 = "//@\n2@3@8";
-        String numberTest_3 = "///\n0/75/5";
-        String numberTest_4 = "// \n0 0 30";
+        String numberTest_3 = "///\n0/75/\n5";
+        String numberTest_4 = "// \n0 0 \n30";
         String numberTest_5 = "//*\n1*2*3";
 
         if (add(numberTest_1) != 8){
