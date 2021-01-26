@@ -8,7 +8,18 @@ public class StringCalculator {
      * @return the sum of the numbers
      */
     public static int add(String numbers){
-        return 0;
+
+        if (numbers.isEmpty()){
+            return 0;
+        }else {
+            String[] splitString = numbers.split(",");
+            int totalSum = 0;
+
+            for (String s : splitString) {
+                totalSum += Integer.parseInt(s);
+            }
+            return totalSum;
+        }
     }
 
     public static void main(String[] args) {
