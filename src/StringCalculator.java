@@ -1,6 +1,5 @@
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 
 public class StringCalculator {
 
@@ -20,7 +19,6 @@ public class StringCalculator {
 
             String delimiter = halfSplit[0].substring(2);
 
-
             if (halfSplit.length > 2){
                 String joinSplit = "";
                 for (int i = 1; i < halfSplit.length; i++){
@@ -34,9 +32,9 @@ public class StringCalculator {
             int totalSum = 0;
 
             for (String s : splitString) {
-
                 if (s.isBlank()){
                     return 0;
+
                 }else if (s.contains("\n")){
                     s = s.trim();
                     if (Integer.parseInt(s) < 0){
@@ -45,8 +43,21 @@ public class StringCalculator {
 
                     totalSum += Integer.parseInt(s);
 
-                }
-                else {
+                } else if(s.length()==4) {
+                    if (Integer.parseInt(s) < 0){
+                        throw new Exception("Negatives not allowed, number " + s + " is negative, therefore not allowed");
+                    }
+
+                    int firstNumber = Integer.parseInt(String.valueOf(s.charAt(0)));
+                    int lastNumber = Integer.parseInt(String.valueOf(s.charAt(s.length()-1)));
+
+                    if (firstNumber == 1 && lastNumber == 0){
+                        totalSum += Integer.parseInt(s);
+                    }else if (firstNumber == 0){
+                        totalSum += Integer.parseInt(s);
+                    }
+
+                } else if (s.length() < 4){
 
                     if (Integer.parseInt(s) < 0){
                         throw new Exception("Negatives not allowed, number " + s + " is negative, therefore not allowed");
@@ -63,30 +74,34 @@ public class StringCalculator {
      */
     @Test
     public void rightSumTest() throws Exception {
-        String numberTest_1 = "//;\n1;3;4";
-        String numberTest_2 = "//@\n2@3@8";
+        String numberTest_1 = "//;\n1;1001;0";
+        String numberTest_2 = "//@\n2@3@009998";
         String numberTest_3 = "///\n0/75/5";
-        String numberTest_4 = "// \n0 0 30";
+        String numberTest_4 = "// \n1 0 1000";
         String numberTest_5 = "//*\n1*\n2*3";
+        String numberTest_6 = "//+\n5+0+-1000";
 
-        if (add(numberTest_1) != 8){
-            System.out.println("The expected result was 8, instead it was "+ add(numberTest_1));
+        if (add(numberTest_1) != 1){
+            System.out.println("The expected result was 1, instead it was "+ add(numberTest_1));
         }
-        if (add(numberTest_2) != 13){
-            System.out.println("The expected result was 3, instead it was "+ add(numberTest_2));
+        if (add(numberTest_2) != 5){
+            System.out.println("The expected result was 5, instead it was "+ add(numberTest_2));
         }
         if (add(numberTest_3) != 80){
             System.out.println("The expected result was 80, instead it was "+ add(numberTest_3));
         }
-        if (add(numberTest_4) != 30){
-            System.out.println("The expected result was 30, instead it was "+ add(numberTest_4));
+        if (add(numberTest_4) != 1001){
+            System.out.println("The expected result was 1001, instead it was "+ add(numberTest_4));
         }
         if (add(numberTest_5) != 6){
             System.out.println("The expected result was 6, instead it was "+ add(numberTest_5));
         }
+        if (add(numberTest_6) != 5){
+            System.out.println("The expected result was 5, instead it was "+ add(numberTest_6));
+        }
 
         try {
-            String negativeNumberTest1 = "//;\n-1;3;-4";
+            String negativeNumberTest1 = "//;\n-101;3;-4";
             add(negativeNumberTest1);
         }catch (Exception e){
             System.out.println("Exception - "+ e + " - caught");
@@ -103,7 +118,7 @@ public class StringCalculator {
 
     public static void main(String[] args) throws Exception {
 
-        String numberTest_1 = "//;\n1;3;4";
+        String numberTest_1 = "//;\n1;09099";
         String numberTest_2 = "//@\n2@3@8";
         String numberTest_3 = "///\n0/75/\n5";
         String numberTest_4 = "// \n0 0 30";
