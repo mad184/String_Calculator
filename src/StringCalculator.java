@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.util.Arrays;
+
 
 public class StringCalculator {
 
@@ -15,6 +17,7 @@ public class StringCalculator {
         if (numbers.isEmpty()){
             return 0;
         }else {
+            String[] splitString;
             String[] halfSplit = numbers.split("\n");
 
             String delimiter = halfSplit[0].substring(2);
@@ -27,7 +30,22 @@ public class StringCalculator {
                 halfSplit[1] = joinSplit;
             }
 
-            String[] splitString = halfSplit[1].split("["+delimiter+"]");
+
+            if (delimiter.length() > 1){
+                splitString = halfSplit[1].split("[" + delimiter + "]");
+
+                String buildString = "";
+                for (String t: splitString){
+                    if (t.isBlank()){
+                        buildString+=",";
+                    }else {
+                        buildString += t;
+                    }
+                }
+                splitString = buildString.split(",".repeat(delimiter.length()-1));
+            }else {
+                splitString = halfSplit[1].split("[" + delimiter + "]");
+            }
 
             int totalSum = 0;
 
@@ -74,12 +92,13 @@ public class StringCalculator {
      */
     @Test
     public void rightSumTest() throws Exception {
-        String numberTest_1 = "//;\n1;1001;0";
+        String numberTest_1 = "//@@\n1@@1001@@0";
         String numberTest_2 = "//@\n2@3@009998";
         String numberTest_3 = "///\n0/75/5";
-        String numberTest_4 = "// \n1 0 1000";
+        String numberTest_4 = "//****\n1****0****1000";
         String numberTest_5 = "//*\n1*\n2*3";
-        String numberTest_6 = "//+\n5+0+-1000";
+        String numberTest_6 = "//%$@\n5%$@0%$@-1000";
+
 
         if (add(numberTest_1) != 1){
             System.out.println("The expected result was 1, instead it was "+ add(numberTest_1));
