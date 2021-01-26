@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.lang.reflect.Array;
+
 public class StringCalculator {
 
     /**
@@ -9,7 +11,7 @@ public class StringCalculator {
      * @param numbers - The String with numbers separated by ","
      * @return the sum of the numbers
      */
-    public static int add(String numbers){
+    public static int add(String numbers) throws Exception {
 
         if (numbers.isEmpty()){
             return 0;
@@ -17,6 +19,15 @@ public class StringCalculator {
             String[] halfSplit = numbers.split("\n");
 
             String delimiter = halfSplit[0].substring(2);
+
+
+            if (halfSplit.length > 2){
+                String joinSplit = "";
+                for (int i = 1; i < halfSplit.length; i++){
+                    joinSplit += halfSplit[i];
+                }
+                halfSplit[1] = joinSplit;
+            }
 
             String[] splitString = halfSplit[1].split("["+delimiter+"]");
 
@@ -28,9 +39,18 @@ public class StringCalculator {
                     return 0;
                 }else if (s.contains("\n")){
                     s = s.trim();
+                    if (Integer.parseInt(s) < 0){
+                        throw new Exception("Negatives not allowed, number " + s + " is negative, therefore not allowed");
+                    }
+
                     totalSum += Integer.parseInt(s);
+
                 }
                 else {
+
+                    if (Integer.parseInt(s) < 0){
+                        throw new Exception("Negatives not allowed, number " + s + " is negative, therefore not allowed");
+                    }
                     totalSum += Integer.parseInt(s);
                 }
             }
@@ -42,12 +62,12 @@ public class StringCalculator {
      * A test that compares the values expected with the actual value return by the method add()
      */
     @Test
-    public void rightSumTest(){
+    public void rightSumTest() throws Exception {
         String numberTest_1 = "//;\n1;3;4";
         String numberTest_2 = "//@\n2@3@8";
         String numberTest_3 = "///\n0/75/5";
         String numberTest_4 = "// \n0 0 30";
-        String numberTest_5 = "//*\n1*2*3";
+        String numberTest_5 = "//*\n1*\n2*3";
 
         if (add(numberTest_1) != 8){
             System.out.println("The expected result was 8, instead it was "+ add(numberTest_1));
@@ -62,18 +82,32 @@ public class StringCalculator {
             System.out.println("The expected result was 30, instead it was "+ add(numberTest_4));
         }
         if (add(numberTest_5) != 6){
-            System.out.println("The expected result was 0, instead it was "+ add(numberTest_5));
+            System.out.println("The expected result was 6, instead it was "+ add(numberTest_5));
+        }
+
+        try {
+            String negativeNumberTest1 = "//;\n-1;3;-4";
+            add(negativeNumberTest1);
+        }catch (Exception e){
+            System.out.println("Exception - "+ e + " - caught");
+        }
+
+        try{
+            String negativeNumberTest2 = "//@\n2@\n-3@8";
+            add(negativeNumberTest2);
+        }catch (Exception e){
+            System.out.println("Exception - "+ e + " - caught");
         }
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         String numberTest_1 = "//;\n1;3;4";
         String numberTest_2 = "//@\n2@3@8";
-        String numberTest_3 = "///\n0/75/5";
+        String numberTest_3 = "///\n0/75/\n5";
         String numberTest_4 = "// \n0 0 30";
-        String numberTest_5 = "//*\n1*2*3";
+        String numberTest_5 = "//*\n1\n*2*3";
 
         int result1 = add(numberTest_1);
         int result2 = add(numberTest_2);
