@@ -1,3 +1,5 @@
+import org.junit.Test;
+
 public class StringCalculator {
 
     /**
@@ -16,13 +18,42 @@ public class StringCalculator {
             int totalSum = 0;
 
             for (String s : splitString) {
-                totalSum += Integer.parseInt(s);
+                if (s.isBlank()){
+                    return 0;
+                }else {
+                    totalSum += Integer.parseInt(s);
+                }
             }
             return totalSum;
         }
     }
 
-    public static void main(String[] args) {
+    /**
+     * A test that compares the values expected with the actual value return by the method add()
+     */
+    @Test
+    public void rightSumTest(){
+        String numberTest_1 = "1,2,5";
+        String numberTest_2 = "1,1,1";
+        String numberTest_3 = "0,75,5";
+        String numberTest_4 = "";
+        String numberTest_5 = " ";
+
+        if (add(numberTest_1) != 8){
+            System.out.println("The expected result was 8, instead it was "+ add(numberTest_1));
+        }
+        if (add(numberTest_2) != 3){
+            System.out.println("The expected result was 3, instead it was "+ add(numberTest_2));
+        }
+        if (add(numberTest_3) != 80){
+            System.out.println("The expected result was 80, instead it was "+ add(numberTest_3));
+        }
+        if (add(numberTest_4) != 0){
+            System.out.println("The expected result was 0, instead it was "+ add(numberTest_4));
+        }
+        if (add(numberTest_5) != 0){
+            System.out.println("The expected result was 0, instead it was "+ add(numberTest_5));
+        }
 
     }
 }
